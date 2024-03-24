@@ -1,14 +1,14 @@
 include config.mk
 
-all: lib/libminmea.a
+library: lib/libminmea.a
 example: bin/example
 test: bin/tests
 
-bin/example: obj/example.o lib/libminmea.a | bin
-	cc $(LDFLAGS) -Llib -lminmea $< -o $@
+bin/example: obj/example.o | lib/libminmea.a bin
+	cc $(LDFLAGS) -Llib -lminmea $^ -o $@
 
-bin/tests: obj/tests.o lib/libminmea.a | bin
-	cc $(LDFLAGS) -Llib -lminmea -lcheck $< -o $@
+bin/tests: obj/tests.o | lib/libminmea.a bin
+	cc $(LDFLAGS) -Llib -lminmea -lcheck $^ -o $@
 
 lib/libminmea.a: obj/minmea.o | lib
 	ar $(ARFLAGS) $@ $^
@@ -22,4 +22,4 @@ bin obj lib:
 clean:
 	rm -rf bin obj lib
 
-.PHONY: all example test clean
+.PHONY: library example clean
