@@ -1,0 +1,8 @@
+-Wall
+-Wextra
+-Wconversion
+-Wdouble-promotion
+-pedantic
+-std=c17
+-Iinclude
+-I/usr/local/include
