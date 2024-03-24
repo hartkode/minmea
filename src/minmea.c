@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <limits.h>
 
 #define boolstr(s) ((s) ? "true" : "false")
 
@@ -76,7 +77,7 @@ bool minmea_check(const char *sentence, bool strict)
     while (*sentence == '\r' || *sentence == '\n') {
         sentence++;
     }
-    
+
     if (*sentence) {
         return false;
     }
@@ -215,16 +216,16 @@ bool minmea_scan(const char *sentence, const char *format, ...)
             } break;
 
             case 'i': { // Integer value, default 0 (int).
-                int value = 0;
+                long value = 0;
 
                 if (field) {
                     char *endptr;
                     value = strtol(field, &endptr, 10);
-                    if (minmea_isfield(*endptr))
+                    if (minmea_isfield(*endptr) || value < INT_MIN || value > INT_MAX)
                         goto parse_error;
                 }
 
-                *va_arg(ap, int *) = value;
+                *va_arg(ap, int *) = (int) value;
             } break;
 
             case 's': { // String value (char *).
@@ -265,12 +266,9 @@ bool minmea_scan(const char *sentence, const char *format, ...)
                         if (!isdigit((unsigned char) field[f]))
                             goto parse_error;
 
-                    char dArr[] = {field[0], field[1], '\0'};
-                    char mArr[] = {field[2], field[3], '\0'};
-                    char yArr[] = {field[4], field[5], '\0'};
-                    d = strtol(dArr, NULL, 10);
-                    m = strtol(mArr, NULL, 10);
-                    y = strtol(yArr, NULL, 10);
+                    d = ((field[0] - '0') * 10) + (field[1] - '0');
+                    m = ((field[2] - '0') * 10) + (field[3] - '0');
+                    y = ((field[4] - '0') * 10) + (field[5] - '0');
                 }
 
                 date->day = d;
@@ -281,7 +279,7 @@ bool minmea_scan(const char *sentence, const char *format, ...)
             case 'T': { // Time (int, int, int, int), -1 if empty.
                 struct minmea_time *time_ = va_arg(ap, struct minmea_time *);
 
-                int h = -1, i = -1, s = -1, u = -1;
+                int h = -1, m = -1, s = -1, u = -1;
 
                 if (field && minmea_isfield(*field)) {
                     // Minimum required: integer time.
@@ -289,18 +287,15 @@ bool minmea_scan(const char *sentence, const char *format, ...)
                         if (!isdigit((unsigned char) field[f]))
                             goto parse_error;
 
-                    char hArr[] = {field[0], field[1], '\0'};
-                    char iArr[] = {field[2], field[3], '\0'};
-                    char sArr[] = {field[4], field[5], '\0'};
-                    h = strtol(hArr, NULL, 10);
-                    i = strtol(iArr, NULL, 10);
-                    s = strtol(sArr, NULL, 10);
+                    h = ((field[0] - '0') * 10) + (field[1] - '0');
+                    m = ((field[2] - '0') * 10) + (field[3] - '0');
+                    s = ((field[4] - '0') * 10) + (field[5] - '0');
                     field += 6;
 
                     // Extra: fractional time. Saved as microseconds.
                     if (*field++ == '.') {
-                        uint32_t value = 0;
-                        uint32_t scale = 1000000LU;
+                        int32_t value = 0;
+                        int32_t scale = 1000000;
                         while (isdigit((unsigned char) *field) && scale > 1) {
                             value = (value * 10) + (*field++ - '0');
                             scale /= 10;
@@ -312,7 +307,7 @@ bool minmea_scan(const char *sentence, const char *format, ...)
                 }
 
                 time_->hours = h;
-                time_->minutes = i;
+                time_->minutes = m;
                 time_->seconds = s;
                 time_->microseconds = u;
             } break;
