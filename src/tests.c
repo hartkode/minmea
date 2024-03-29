@@ -490,7 +490,7 @@ START_TEST(test_minmea_parse_gbs1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == false);
     ck_assert(minmea_parse_gbs(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -511,7 +511,7 @@ START_TEST(test_minmea_parse_gbs2)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gbs(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -532,7 +532,7 @@ START_TEST(test_minmea_parse_rmc1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == false);
     ck_assert(minmea_parse_rmc(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -550,7 +550,7 @@ START_TEST(test_minmea_parse_rmc2)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == false);
     ck_assert(minmea_parse_rmc(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -573,7 +573,7 @@ START_TEST(test_minmea_parse_gga1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gga(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -594,7 +594,7 @@ START_TEST(test_minmea_parse_gst1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gst(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -613,7 +613,7 @@ START_TEST(test_minmea_parse_gsa1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsa(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -637,7 +637,7 @@ START_TEST(test_minmea_parse_gll1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gll(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -656,7 +656,7 @@ START_TEST(test_minmea_parse_gll2)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == false);
     ck_assert(minmea_parse_gll(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -698,7 +698,7 @@ START_TEST(test_minmea_parse_gsv1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsv(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -740,7 +740,7 @@ START_TEST(test_minmea_parse_gsv2)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsv(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -782,7 +782,7 @@ START_TEST(test_minmea_parse_gsv3)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsv(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -824,7 +824,7 @@ START_TEST(test_minmea_parse_gsv4)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsv(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -866,7 +866,7 @@ START_TEST(test_minmea_parse_gsv5)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gsv(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -889,7 +889,7 @@ START_TEST(test_minmea_parse_vtg1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_vtg(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -911,7 +911,7 @@ START_TEST(test_minmea_parse_vtg2)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_vtg(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -932,7 +932,7 @@ START_TEST(test_minmea_parse_vtg3)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_vtg(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
@@ -952,7 +952,7 @@ START_TEST(test_minmea_parse_zda1)
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_zda(&frame, sentence) == true);
-    ck_assert(!memcmp(&frame, &expected, sizeof(frame)));
+    ck_assert(memcmp(&frame, &expected, sizeof(frame)) == 0);
 }
 END_TEST
 
