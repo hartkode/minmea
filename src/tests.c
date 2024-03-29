@@ -476,7 +476,7 @@ END_TEST
 START_TEST(test_minmea_parse_gbs1)
 {
     const char *sentence = "$GNGBS,170556.00,3.0,2.9,8.3,,,,";
-    struct minmea_sentence_gbs frame = {};
+    struct minmea_sentence_gbs frame = { 0 };
     static const struct minmea_sentence_gbs expected = {
 	    .time = { 17, 5, 56, 0 },
 	    .err_latitude = { 30, 10 },
@@ -497,7 +497,7 @@ END_TEST
 START_TEST(test_minmea_parse_gbs2)
 {
     const char *sentence = "$GPGBS,015509.00,-0.031,-0.186,0.219,19,0.000,-0.354,6.972*4D";
-    struct minmea_sentence_gbs frame = {};
+    struct minmea_sentence_gbs frame = { 0 };
     static const struct minmea_sentence_gbs expected = {
         .time = { 1, 55, 9 },
         .err_latitude = { -31, 1000 },
@@ -518,7 +518,7 @@ END_TEST
 START_TEST(test_minmea_parse_rmc1)
 {
     const char *sentence = "$GPRMC,081836.75,A,3751.65,S,14507.36,E,000.0,360.0,130998,011.3,E";
-    struct minmea_sentence_rmc frame = {};
+    struct minmea_sentence_rmc frame = { 0 };
     static const struct minmea_sentence_rmc expected = {
         .time = { 8, 18, 36, 750000 },
         .valid = true,
@@ -539,7 +539,7 @@ END_TEST
 START_TEST(test_minmea_parse_rmc2)
 {
     const char *sentence = "$GPRMC,,A,3751.65,N,14507.36,W,,,,,";
-    struct minmea_sentence_rmc frame = {};
+    struct minmea_sentence_rmc frame = { 0 };
     static const struct minmea_sentence_rmc expected = {
         .time = { -1, -1, -1, -1 },
         .valid = true,
@@ -557,19 +557,20 @@ END_TEST
 START_TEST(test_minmea_parse_gga1)
 {
     const char *sentence = "$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47";
-    struct minmea_sentence_gga frame = {};
-    struct minmea_sentence_gga expected = {};
-    expected.time = (struct minmea_time) { 12, 35, 19, 0 };
-    expected.latitude = (struct minmea_float) { 4807038, 1000 };
-    expected.longitude = (struct minmea_float) { 1131000, 1000 };
-    expected.fix_quality = 1;
-    expected.satellites_tracked = 8;
-    expected.hdop = (struct minmea_float) { 9, 10 };
-    expected.altitude = (struct minmea_float) { 5454, 10 };
-    expected.altitude_units = 'M';
-    expected.height = (struct minmea_float) { 469, 10 };
-    expected.height_units = 'M';
-    expected.dgps_age = (struct minmea_float) { 0, 0 };
+    struct minmea_sentence_gga frame = { 0 };
+    struct minmea_sentence_gga expected = {
+        .time = (struct minmea_time) { 12, 35, 19, 0 },
+        .latitude = (struct minmea_float) { 4807038, 1000 },
+        .longitude = (struct minmea_float) { 1131000, 1000 },
+        .fix_quality = 1,
+        .satellites_tracked = 8,
+        .hdop = (struct minmea_float) { 9, 10 },
+        .altitude = (struct minmea_float) { 5454, 10 },
+        .altitude_units = 'M',
+        .height = (struct minmea_float) { 469, 10 },
+        .height_units = 'M',
+        .dgps_age = (struct minmea_float) { 0, 0 }
+    };
     ck_assert(minmea_check(sentence, false) == true);
     ck_assert(minmea_check(sentence, true) == true);
     ck_assert(minmea_parse_gga(&frame, sentence) == true);
@@ -580,7 +581,7 @@ END_TEST
 START_TEST(test_minmea_parse_gst1)
 {
     const char *sentence = "$GPGST,024603.00,3.2,6.6,4.7,47.3,5.8,5.6,22.0*58";
-    struct minmea_sentence_gst frame = {};
+    struct minmea_sentence_gst frame = { 0 };
     struct minmea_sentence_gst expected = {
         .time = { 2, 46, 3, 0 },
         .rms_deviation = { 32, 10 },
@@ -601,7 +602,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsa1)
 {
     const char *sentence = "$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39";
-    struct minmea_sentence_gsa frame = {};
+    struct minmea_sentence_gsa frame = { 0 };
     static const struct minmea_sentence_gsa expected = {
         .mode = MINMEA_GPGSA_MODE_AUTO,
         .fix_type = MINMEA_GPGSA_FIX_3D,
@@ -620,7 +621,7 @@ END_TEST
 START_TEST(test_minmea_parse_gll1)
 {
     const char *sentence = "$GPGLL,3723.2475,N,12158.3416,W,161229.487,A,A*41";
-    struct minmea_sentence_gll frame;
+    struct minmea_sentence_gll frame = { 0 };
     struct minmea_sentence_gll expected;
 
     // clear structs before initialization to enable use of memcmp()
@@ -644,7 +645,7 @@ END_TEST
 START_TEST(test_minmea_parse_gll2)
 {
     const char *sentence = "$GPGLL,4916.45,N,12311.12,W,225444,A";
-    struct minmea_sentence_gll frame = {};
+    struct minmea_sentence_gll frame = { 0 };
     struct minmea_sentence_gll expected = {
         .latitude = { 491645, 100 },
         .longitude = { -1231112, 100 },
@@ -663,7 +664,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsv1)
 {
     const char *sentence = "$GPGSV,3,3,11,22,42,067,42,24,14,311,43,27,05,244,00,,,,*4D";
-    struct minmea_sentence_gsv frame = {};
+    struct minmea_sentence_gsv frame = { 0 };
     static const struct minmea_sentence_gsv expected = {
         .total_msgs = 3,
         .msg_nr = 3,
@@ -705,7 +706,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsv2)
 {
     const char *sentence = "$GPGSV,4,2,11,08,51,203,30,09,45,215,28*75";
-    struct minmea_sentence_gsv frame = {};
+    struct minmea_sentence_gsv frame = { 0 };
     static const struct minmea_sentence_gsv expected = {
         .total_msgs = 4,
         .msg_nr = 2,
@@ -747,7 +748,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsv3)
 {
     const char *sentence = "$GPGSV,4,4,13,39,31,170,27*40";
-    struct minmea_sentence_gsv frame = {};
+    struct minmea_sentence_gsv frame = { 0 };
     static const struct minmea_sentence_gsv expected = {
         .total_msgs = 4,
         .msg_nr = 4,
@@ -789,7 +790,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsv4)
 {
     const char *sentence = "$GPGSV,4,4,13*7B";
-    struct minmea_sentence_gsv frame = {};
+    struct minmea_sentence_gsv frame = { 0 };
     static const struct minmea_sentence_gsv expected = {
         .total_msgs = 4,
         .msg_nr = 4,
@@ -831,7 +832,7 @@ END_TEST
 START_TEST(test_minmea_parse_gsv5)
 {
     const char *sentence = "$GPGSV,4,1,13,02,28,259,33,04,12,212,27,05,34,305,30,07,79,138,*7F";
-    struct minmea_sentence_gsv frame = {};
+    struct minmea_sentence_gsv frame = { 0 };
     static const struct minmea_sentence_gsv expected = {
         .total_msgs = 4,
         .msg_nr = 1,
@@ -875,10 +876,8 @@ START_TEST(test_minmea_parse_vtg1)
 {
     const char *sentence = "$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48";
     // clear structs before initialization to enable use of memcmp()
-    struct minmea_sentence_vtg frame = {};
-    struct minmea_sentence_vtg expected = {};
-
-    expected = (struct minmea_sentence_vtg){
+    struct minmea_sentence_vtg frame = { 0 };
+    struct minmea_sentence_vtg expected = {
         .true_track_degrees = { 547, 10 },
         .magnetic_track_degrees = { 344, 10 },
         .speed_knots = { 55, 10 },
@@ -897,10 +896,8 @@ START_TEST(test_minmea_parse_vtg2)
 {
     const char *sentence = "$GPVTG,188.36,T,,M,0.820,N,1.519,K,A*3F";
     // clear structs before initialization to enable use of memcmp()
-    struct minmea_sentence_vtg frame = {};
-    struct minmea_sentence_vtg expected = {};
-
-    expected = (struct minmea_sentence_vtg){
+    struct minmea_sentence_vtg frame = { 0 };
+    struct minmea_sentence_vtg expected = {
         .true_track_degrees = { 18836, 100 },
         .magnetic_track_degrees = { 0, 0 },
         .speed_knots = { 820, 1000 },
@@ -920,9 +917,8 @@ START_TEST(test_minmea_parse_vtg3)
     // https://github.com/kosma/minmea/issues/57
     const char *sentence = "$GNVTG,,,,,,,,,N*2E";
     // clear structs before initialization to enable use of memcmp()
-    struct minmea_sentence_vtg frame = {};
-    struct minmea_sentence_vtg expected = {};
-    expected = (struct minmea_sentence_vtg){
+    struct minmea_sentence_vtg frame = { 0 };
+    struct minmea_sentence_vtg expected = {
         .true_track_degrees = { 0, 0 },
         .magnetic_track_degrees = { 0, 0 },
         .speed_knots = { 0, 0 },
@@ -939,10 +935,8 @@ END_TEST
 START_TEST(test_minmea_parse_zda1)
 {
     const char *sentence = "$GPZDA,160012.71,11,03,2004,-1,00*7D";
-    struct minmea_sentence_zda frame = {};
-    struct minmea_sentence_zda expected = {};
-
-    expected = (struct minmea_sentence_zda) {
+    struct minmea_sentence_zda frame = { 0 };
+    struct minmea_sentence_zda expected = {
         .time = { 16, 0, 12, 710000 },
         .date = { 11, 3, 2004 },
         .hour_offset = -1,
